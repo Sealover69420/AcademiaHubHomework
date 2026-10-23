@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AcademiaHub | Student Learning Portal</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* CSS Variables for Dynamic Theme Engine */
+    :root {
+      --bg-main: #020617;
+      --bg-gradient: radial-gradient(circle at 50% 10%, #1e1b4b 0%, #0f172a 50%, #020617 100%);
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-inner: rgba(30, 41, 59, 0.6);
+      --card-border: rgba(99, 102, 241, 0.3);
+      --accent-color: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --orb-1: #3b82f6;
+      --orb-2: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body.theme-cyber {
+      --bg-main: #09090b;
+      --bg-gradient: radial-gradient(circle at 50% 10%, #4c0519 0%, #18181b 50%, #09090b 100%);
+      --card-bg: rgba(24, 24, 27, 0.85);
+      --card-inner: rgba(39, 39, 42, 0.7);
+      --card-border: rgba(236, 72, 153, 0.4);
+      --accent-color: #ec4899;
+      --accent-glow: rgba(236, 72, 153, 0.5);
+      --orb-1: #f43f5e;
+      --orb-2: #a855f7;
+    }
+
+    body.theme-matrix {
+      --bg-main: #022c22;
+      --bg-gradient: radial-gradient(circle at 50% 10%, #064e3b 0%, #022c22 50%, #020617 100%);
+      --card-bg: rgba(6, 78, 59, 0.65);
+      --card-inner: rgba(20, 83, 45, 0.6);
+      --card-border: rgba(16, 185, 129, 0.4);
+      --accent-color: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.5);
+      --orb-1: #10b981;
+      --orb-2: #059669;
+    }
+
+    body.theme-purple {
+      --bg-main: #140824;
+      --bg-gradient: radial-gradient(circle at 50% 10%, #581c87 0%, #2e1065 50%, #0f172a 100%);
+      --card-bg: rgba(30, 11, 54, 0.8);
+      --card-inner: rgba(58, 28, 97, 0.6);
+      --card-border: rgba(168, 85, 247, 0.4);
+      --accent-color: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.5);
+      --orb-1: #c084fc;
+      --orb-2: #e879f9;
+    }
+
+    body.theme-pitchblack {
+      --bg-main: #000000;
+      --bg-gradient: #000000;
+      --card-bg: rgba(18, 18, 18, 0.9);
+      --card-inner: rgba(30, 30, 30, 0.8);
+      --card-border: rgba(255, 255, 255, 0.2);
+      --accent-color: #ffffff;
+      --accent-glow: rgba(255, 255, 255, 0.2);
+      --orb-1: #333333;
+      --orb-2: #111111;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .glass-card {
+      background: var(--card-inner);
+      border: 1px solid var(--card-border);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-color);
+      box-shadow: 0 10px 25px -5px var(--accent-glow);
+    }
+
+    /* Ambient Pulsing Orbs */
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      animation: pulseOrb 12s infinite alternate ease-in-out;
+    }
+    .orb-1 { top: -10%; left: -10%; width: 55vw; height: 55vw; background: var(--orb-1); }
+    .orb-2 { bottom: -10%; right: -10%; width: 55vw; height: 55vw; background: var(--orb-2); }
+
+    @keyframes pulseOrb {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.1) translate(25px, -25px); }
+      100% { transform: scale(0.9) translate(-25px, 25px); }
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+  </style>
+</head>
+<body class="relative min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Ambient Glow Background Orbs -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+
+  <!-- Top Sticky Header Navigation -->
+  <header class="sticky top-0 z-40 w-full glass-panel border-b border-indigo-500/20 px-4 py-3 flex items-center justify-between transition-all">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleDrawer()" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-white transition shadow border border-indigo-500/20" title="Table of Contents">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+      <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('dashboard')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+        </div>
+        <span class="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 hidden sm:inline">
+          AcademiaHub
+        </span>
+      </div>
+    </div>
+
+    <!-- Active Header Controls -->
+    <div class="flex items-center gap-3">
+      <button onclick="openThemeModal()" class="px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-indigo-500/30 text-indigo-300 hover:text-white flex items-center gap-2 text-sm font-medium transition shadow">
+        <i class="fa-solid fa-palette text-amber-400"></i>
+        <span class="hidden sm:inline">Theme</span>
+      </button>
+
+      <!-- Student Profile Badge -->
+      <div onclick="openProfileModal()" class="flex items-center gap-2 cursor-pointer p-1 pr-3 rounded-full bg-slate-800/80 border border-indigo-500/30 hover:border-indigo-400 transition shadow">
+        <img id="navAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Scholar" alt="Avatar" class="w-8 h-8 rounded-full bg-indigo-950 border border-indigo-400 object-cover">
+        <span id="navName" class="text-sm font-semibold text-slate-200 hidden md:inline">Alex Rivers</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Slide-Out Sidebar / Table of Contents Drawer -->
+  <div id="drawerBackdrop" onclick="toggleDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <aside id="drawer" class="fixed top-0 left-0 h-full w-80 glass-panel border-r border-indigo-500/30 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col p-5">
+    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/60">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-book-bookmark text-indigo-400 text-lg"></i>
+        <h2 class="text-lg font-bold text-slate-100 tracking-wide">Table of Contents</h2>
+      </div>
+      <button onclick="toggleDrawer()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <nav class="flex-1 space-y-2 overflow-y-auto">
+      <button onclick="switchTab('dashboard')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-house w-5 text-indigo-400"></i>
+        <span>Dashboard Overview</span>
+      </button>
+      <button onclick="switchTab('assignments')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-list-check w-5 text-emerald-400"></i>
+        <span>Homework & Tasks</span>
+      </button>
+      <button onclick="switchTab('join-class')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-chalkboard-user w-5 text-blue-400"></i>
+        <span>Join Classroom</span>
+      </button>
+      <button onclick="switchTab('about')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-circle-info w-5 text-cyan-400"></i>
+        <span>About AcademiaHub</span>
+      </button>
+      <button onclick="switchTab('gpa')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-calculator w-5 text-amber-400"></i>
+        <span>GPA Calculator</span>
+      </button>
+      <button onclick="switchTab('notes')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-600/20 text-slate-300 hover:text-white transition text-left font-medium">
+        <i class="fa-solid fa-note-sticky w-5 text-purple-400"></i>
+        <span>Smart Notepad</span>
+      </button>
+
+      <!-- SECRET ARCADE (HIDDEN UNTIL UNLOCKED) -->
+      <div id="drawerSecretTab" class="hidden pt-4 border-t border-slate-700/60">
+        <div class="px-4 py-1 text-xs font-bold text-pink-400 tracking-wider uppercase">Unlocked Zone</div>
+        <button onclick="switchTab('arcade')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 text-pink-300 hover:text-white transition text-left mt-1 font-bold">
+          <i class="fa-solid fa-gamepad w-5 text-pink-400 animate-pulse"></i>
+          <span>Secret Arcade</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="pt-4 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+      <span>AcademiaHub v3.8</span>
+      <button onclick="openProfileModal(); toggleDrawer();" class="text-indigo-400 hover:underline">Edit Profile</button>
+    </div>
+  </aside>
+
+  <!-- Main View Workspace Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 z-10 space-y-6">
+
+    <!-- Notification Banner Message Box -->
+    <div id="toastMessage" class="hidden fixed bottom-6 right-6 z-50 max-w-sm px-5 py-3 rounded-2xl glass-panel border border-indigo-500/50 text-white shadow-2xl flex items-center gap-3 transition-all">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+      <span id="toastText" class="text-sm font-medium">Notification</span>
+    </div>
+
+    <!-- TAB 1: DASHBOARD OVERVIEW -->
+    <section id="tab-dashboard" class="tab-content space-y-6">
+      <div class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-l-4 border-indigo-500">
+        <div>
+          <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm mb-1">
+            <span id="dashGradeLevel">11th Grade Scholar</span>
+          </div>
+          <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight">
+            Welcome back, <span id="dashStudentName" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Alex Rivers</span> 👋
+          </h1>
+          <p id="dashBio" class="text-slate-400 mt-2 text-sm md:text-base max-w-xl">
+            "Focus on progress, not perfection. Keep pushing your limits every single day!"
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button onclick="switchTab('assignments')" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Add Assignment
+          </button>
+          <button onclick="openProfileModal()" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-sm font-medium transition">
+            <i class="fa-solid fa-pen-to-square"></i> Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Dashboard Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+        <div class="glass-card p-6 rounded-2xl flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 text-indigo-400 text-2xl flex items-center justify-center border border-indigo-500/30">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-white" id="statPending">0</div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1">Pending Tasks</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center border border-emerald-500/30">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-white" id="statCompleted">0</div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1">Completed Homework</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 text-2xl flex items-center justify-center border border-amber-500/30">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-white" id="statGPA">3.85</div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1">Current Calculated GPA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Quick Homework Preview -->
+      <div class="glass-panel p-6 rounded-3xl space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-indigo-400"></i> Priority Assignments
+          </h2>
+          <button onclick="switchTab('assignments')" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300">View All →</button>
+        </div>
+        <div id="dashTasksPreview" class="space-y-3">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: HOMEWORK & TASK TRACKER -->
+    <section id="tab-assignments" class="tab-content hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-black text-white">Homework & Task Tracker</h2>
+          <p class="text-sm text-slate-400">Keep track of your projects, upcoming exams, and daily tasks.</p>
+        </div>
+        <button onclick="openTaskModal()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Create New Task
+        </button>
+      </div>
+
+      <!-- Task List Container -->
+      <div id="taskList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 3: JOIN CLASSROOM (CLASS CODE TAB) -->
+    <section id="tab-join-class" class="tab-content hidden space-y-6">
+      <div class="max-w-xl mx-auto glass-panel p-8 md:p-10 rounded-3xl text-center space-y-6">
+        <div class="w-20 h-20 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 text-4xl flex items-center justify-center mx-auto shadow-inner">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl md:text-3xl font-black text-white">Join a Classroom</h2>
+          <p class="text-slate-400 text-sm mt-1">Enter your assigned class code to connect to your workspace.</p>
+        </div>
+
+        <div class="space-y-4">
+          <input type="text" id="classCodeInput" placeholder="Enter Class Code" class="w-full px-5 py-4 rounded-2xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-center text-lg font-mono tracking-widest focus:outline-none focus:border-indigo-500 transition shadow-inner">
+          <button onclick="submitClassCode()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold shadow-lg shadow-indigo-600/30 transition">
+            Join Class
+          </button>
+        </div>
+
+        <div id="classCodeFeedback" class="hidden p-4 rounded-2xl text-sm font-semibold transition" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="max-w-5xl mx-auto space-y-6">
+        <div class="glass-panel p-6 rounded-3xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div><h3 class="text-xl font-black text-white">Classroom workspace</h3><p class="text-sm text-slate-400">Create a class, join by code, post assignments, and review submissions.</p></div>
+            <label class="text-sm text-slate-300 flex items-center gap-2">Workspace mode
+              <select id="classroomMode" onchange="renderClassrooms()" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white"><option value="student">Student</option><option value="teacher">Teacher</option></select>
+            </label>
+          </div>
+          <p class="text-xs text-amber-200 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Prototype note: this version stores classroom data in this browser only. It is not yet a shared online classroom or secure account system.</p>
+          <div id="teacherClassTools" class="hidden border-t border-slate-700 pt-4 space-y-3">
+            <h4 class="font-bold text-white">Create a class</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input id="newClassName" maxlength="80" placeholder="Class name (e.g. Biology 101)" class="px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white">
+              <input id="newClassCode" maxlength="24" placeholder="Join code (optional)" class="px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white uppercase">
+              <button onclick="createClassroom()" class="px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">Create class</button>
+            </div>
+            <p class="text-xs text-slate-400">Codes are normalized to uppercase. Choose a code that is unique within this browser.</p>
+          </div>
+        </div>
+        <div id="classroomList" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: GPA CALCULATOR -->
+    <section id="tab-gpa" class="tab-content hidden space-y-6">
+      <div class="glass-panel p-6 md:p-8 rounded-3xl space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-white">GPA Calculator</h2>
+          <p class="text-sm text-slate-400">Add your courses, credit hours, and grades to compute your Grade Point Average.</p>
+        </div>
+
+        <!-- Add Course Form -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+          <input type="text" id="gpaCourseName" placeholder="Course Title (e.g. AP Physics)" class="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-indigo-500">
+          <select id="gpaGrade" class="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-indigo-500">
+            <option value="4.0">Grade: A (4.0)</option>
+            <option value="3.7">Grade: A- (3.7)</option>
+            <option value="3.3">Grade: B+ (3.3)</option>
+            <option value="3.0">Grade: B (3.0)</option>
+            <option value="2.7">Grade: B- (2.7)</option>
+            <option value="2.3">Grade: C+ (2.3)</option>
+            <option value="2.0">Grade: C (2.0)</option>
+            <option value="1.0">Grade: D (1.0)</option>
+            <option value="0.0">Grade: F (0.0)</option>
+          </select>
+          <input type="number" id="gpaCredits" placeholder="Credits (e.g. 3)" value="3" min="1" max="6" class="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-indigo-500">
+          <button onclick="addGpaCourse()" class="py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition">
+            Add Course
+          </button>
+        </div>
+
+        <!-- Courses List & Total GPA Display -->
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="flex-1 space-y-3">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Enrolled Courses</h3>
+            <div id="gpaCoursesList" class="space-y-2">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="w-full md:w-64 glass-card p-6 rounded-2xl flex flex-col justify-center items-center text-center space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Cumulative GPA</span>
+            <span id="calculatedGpaScore" class="text-5xl font-black text-amber-400">4.00</span>
+            <span class="text-xs text-slate-400" id="gpaTotalCredits">0 Total Credits</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: SMART NOTEPAD -->
+    <section id="tab-notes" class="tab-content hidden space-y-6">
+      <div class="glass-panel p-6 md:p-8 rounded-3xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-black text-white">Smart Notepad</h2>
+            <p class="text-sm text-slate-400">Jot down quick study notes, formulas, or reminders. Saved automatically.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="saveNote()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition">
+              <i class="fa-solid fa-floppy-disk mr-1.5"></i> Save
+            </button>
+            <button onclick="exportNote()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm transition border border-slate-700">
+              <i class="fa-solid fa-download mr-1.5"></i> Export
+            </button>
+            <button onclick="clearNote()" class="px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 font-semibold text-sm transition border border-red-500/30">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <textarea id="smartNotePad" rows="12" placeholder="Start typing your study notes here..." class="w-full p-4 rounded-2xl bg-slate-900/90 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition shadow-inner font-mono text-sm"></textarea>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE: STUDENT-FIRST LEARNING PORTAL -->
+    <section id="tab-about" class="tab-content hidden space-y-6">
+      <div class="glass-panel rounded-3xl overflow-hidden">
+        <div class="p-8 md:p-12 border-b border-indigo-500/20 bg-gradient-to-br from-indigo-950/80 via-slate-900/80 to-cyan-950/40">
+          <p class="text-sm uppercase tracking-[0.22em] font-bold text-cyan-300 mb-3">Our story · Our approach · Our community</p>
+          <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white max-w-4xl">A better space to learn, plan, and grow.</h1>
+          <p class="text-slate-300 text-lg leading-8 max-w-3xl mt-6">AcademiaHub is a student-focused workspace designed to bring everyday academic organization into one calm, welcoming place. From planning assignments to keeping useful notes close at hand, our goal is to make the school day feel more manageable and help students build habits that last.</p>
+          <div class="flex flex-wrap gap-3 mt-7">
+            <button onclick="switchTab('dashboard')" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">Explore your dashboard</button>
+            <button onclick="switchTab('join-class')" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 font-semibold">Join a classroom</button>
+          </div>
+        </div>
+        <div class="p-6 md:p-10 space-y-10 text-slate-300 leading-8">
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">01 / Who we are</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">A workspace built around students</h2>
+            <p>School life involves more than attending classes. Students balance assignments, tests, projects, reading, activities, personal goals, and the many small tasks that can be easy to forget. AcademiaHub brings several useful planning tools together in one interface, so the next step is easier to find and the bigger picture is easier to understand.</p>
+            <p>This project is built around a simple idea: useful tools should feel approachable. A workspace should help you get started, not make the process feel more complicated. Clear labels, familiar navigation, readable cards, and a consistent visual system all help turn a long list of responsibilities into a set of manageable actions.</p>
+            <p>AcademiaHub is an independent student workspace concept. It is not affiliated with, endorsed by, or operated by any school district or official learning-management provider. Names and examples in the interface are sample content that can be personalized by each user.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">02 / Our mission</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Make organization feel achievable</h2>
+            <p>Our mission is to make everyday academic planning simpler. That means helping students see what needs attention, record important details, and keep their own working notes together. We believe that a small amount of structure can reduce the stress of remembering everything at once.</p>
+            <p>We do not define success as having a perfect schedule or completing every task without difficulty. A useful system should be flexible enough to handle a busy week, a changed deadline, an unexpected challenge, or a fresh start after falling behind. Progress is built through repeatable steps, realistic plans, and the ability to adjust when circumstances change.</p>
+            <p>For that reason, AcademiaHub emphasizes personal control. Students can organize tasks by subject, update progress as they work, calculate a grade-point average using the values they enter, and keep a notepad for thoughts or reminders. The tools are intended to support decisions, not make decisions on a student's behalf.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">03 / What guides us</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Clarity, flexibility, and respect</h2>
+            <h3 class="text-lg font-bold text-white">Clarity over clutter</h3>
+            <p>Important information should be easy to scan. Headings describe what a section does, controls use familiar wording, and related tools live near each other. The aim is to reduce friction between deciding what to do and taking the first step.</p>
+            <h3 class="text-lg font-bold text-white">Flexibility for different routines</h3>
+            <p>Every student works differently. Some plan a week in advance; others need a quick list for today. Some prefer a minimal interface, while others appreciate more color. Theme and profile options make the workspace more personal without changing the purpose of the tools.</p>
+            <h3 class="text-lg font-bold text-white">Respect for the individual</h3>
+            <p>Grades and productivity do not tell the whole story of a person. The workspace is designed as a practical aid, not a measure of worth. Students should feel free to revise a plan, change their approach, and ask for support when it is needed.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">04 / The dashboard</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">A useful starting point for the day</h2>
+            <p>The dashboard provides a quick overview of the workspace. Summary cards show pending and completed tasks, while the priority list highlights assignments that may need attention. Instead of opening several different sections to understand the current workload, students can begin with one view and move directly to the tool they need.</p>
+            <p>The dashboard is most useful when its information stays current. Add tasks when they are assigned, update their status as work progresses, and remove or complete items when they are no longer relevant. A short review at the beginning or end of the day can help identify the next practical action.</p>
+            <p>Sample profile details and sample assignments may appear when the workspace is first opened. They are examples, not official school records. Replace them with your own information or remove them to make the dashboard reflect your actual routine.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">05 / Planning and assignments</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Turn large responsibilities into clear steps</h2>
+            <p>The task tracker gives each assignment a subject, title, due date, status, and optional description. These details make it easier to distinguish a short practice exercise from a longer project and to see which responsibilities are pending, underway, or complete.</p>
+            <p>For a large assignment, consider writing the next action rather than only the final goal. “Find three sources,” “draft the introduction,” and “check the rubric” are often easier to begin than “finish research paper.” Breaking work into smaller actions helps create momentum and makes progress visible.</p>
+            <p>Due dates can help with prioritization, but a date alone does not tell you how much time a task will require. Review the workload as a whole, allow room for unexpected delays, and ask a teacher for clarification when requirements or deadlines are uncertain. AcademiaHub is a personal organizer; it does not replace official instructions or a school's assignment system.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">06 / Classroom access</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">A simple place to enter a class code</h2>
+            <p>The Join Classroom area provides a straightforward code-entry interaction. Enter the code provided for the workspace you intend to access and follow the on-screen response. The page can be used as a front-end demonstration of classroom-style navigation; it does not automatically connect to a real school's systems or verify enrollment with a school district.</p>
+            <p>Never enter a school password, student number, or other sensitive credential into a code field unless the service is an official, trusted system that specifically requires it. A class code should not be treated as proof that a person is enrolled or authorized to access confidential records.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">07 / Grade planning</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Understand the numbers you enter</h2>
+            <p>The GPA calculator helps users explore how course grades and credit values affect a weighted average. Add a course, select the grade-point value used by your school, enter its credits, and review the calculated result. It can be helpful for planning and understanding hypothetical scenarios.</p>
+            <p>Grading policies differ between schools, programs, and courses. Some use weighted honors or advanced-placement scales; some use different grade-point mappings; and some calculate GPA using additional rules. The calculator uses the values provided in this workspace, so its result should be compared with your school's official policy rather than assumed to be an official transcript calculation.</p>
+            <p>Use the tool to ask constructive questions: Which course has the most credits? What happens if a grade changes? Which grading scale applies? For official academic standing, graduation requirements, or transcript questions, consult your counselor or school records.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">08 / Notes and reflection</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Keep useful ideas close at hand</h2>
+            <p>The Smart Notepad provides a quick space for formulas, reminders, reading notes, project ideas, and personal checklists. Notes can be saved within the browser workspace and exported for use elsewhere. A simple notepad is not a replacement for a full document editor, but it can be a convenient place to capture information before it is forgotten.</p>
+            <p>Try using short headings to separate subjects, or write down questions to bring to class. At the end of a study session, summarize what you learned and list the next step. This makes it easier to resume work later without having to reconstruct the entire thought process.</p>
+            <p>Because this is a browser-based project, locally stored information may depend on the browser and device in use. Clearing site data, switching devices, or using a private browsing session can affect what remains available. Export anything important and avoid storing sensitive personal information in a general-purpose note field.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">09 / Personalization and accessibility</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Make the workspace feel like yours</h2>
+            <p>Profiles and visual themes let students personalize the experience. A recognizable profile can make the dashboard feel familiar, while a different color palette can improve comfort or simply suit personal taste. Personalization should support readability: choose contrast that makes text easy to distinguish and remember that color alone should not be the only way important information is communicated.</p>
+            <p>The layout is designed to adapt to different screen widths, including phones, tablets, laptops, and desktop monitors. On smaller screens, controls may stack vertically and navigation may be more compact. If a control is difficult to use, try a larger screen or browser zoom and report the specific issue so it can be improved.</p>
+            <p>Accessibility is an ongoing process rather than a one-time feature. Clear labels, keyboard-friendly controls, useful focus states, readable type, and predictable navigation all matter. We aim to keep the interface understandable and practical as the project develops.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">10 / Privacy and responsible use</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Use your information thoughtfully</h2>
+            <p>This single-page project stores workspace preferences and some entered information in browser local storage. That is convenient for a personal demonstration, but it is not the same as a secure, managed student information system. People with access to the same browser profile or device may be able to access locally stored data.</p>
+            <p>Do not use this demo to store passwords, confidential student records, private health information, or information you would not want exposed to another person using the device. If you share a device, consider clearing your workspace data when appropriate and follow the device owner's rules.</p>
+            <p>Use the site in ways that respect your school's technology policies, classroom expectations, and applicable rules. A personal productivity page should support learning and organization, not interfere with instruction or misrepresent itself as an official school service.</p>
+          </section>
+          <section class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">11 / Looking ahead</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">A project that can keep improving</h2>
+            <p>Good student tools grow through thoughtful iteration. Future improvements could include more accessible keyboard navigation, better task sorting, optional reminders, import and export tools, clearer data controls, and additional ways to organize projects by term or subject. Any new feature should be evaluated by whether it solves a real problem and remains simple to understand.</p>
+            <p>We value useful feedback: a confusing label, a layout that breaks on a phone, a calculation that needs clarification, or a workflow that takes too many steps. Specific observations make it easier to identify what needs attention and to prioritize changes that benefit the whole experience.</p>
+            <p>Our direction is to keep the workspace welcoming, practical, and adaptable. It should be possible to open the page, understand where to go, and make progress without a lengthy setup process.</p>
+          </section>
+          <section class="space-y-4">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-indigo-300">12 / Frequently asked questions</p>
+            <div class="glass-card rounded-2xl p-5"><h3 class="font-bold text-white text-lg">Is AcademiaHub an official school platform?</h3><p class="mt-2">No. It is an independent student workspace project and is not affiliated with a school or district.</p></div>
+            <div class="glass-card rounded-2xl p-5"><h3 class="font-bold text-white text-lg">Are the assignments and profile details real?</h3><p class="mt-2">The initial examples are sample content. You can personalize them in the workspace.</p></div>
+            <div class="glass-card rounded-2xl p-5"><h3 class="font-bold text-white text-lg">Does the GPA calculator provide an official GPA?</h3><p class="mt-2">No. It calculates from the grades and credits entered and may not match your school's grading rules.</p></div>
+            <div class="glass-card rounded-2xl p-5"><h3 class="font-bold text-white text-lg">Where is my information saved?</h3><p class="mt-2">This version uses browser local storage for workspace data. It is not a secure student-records service, and data may not follow you to another device.</p></div>
+            <div class="glass-card rounded-2xl p-5"><h3 class="font-bold text-white text-lg">How can I get the most from the workspace?</h3><p class="mt-2">Keep your task list current, use small next steps for larger projects, review deadlines regularly, and export notes you want to keep elsewhere.</p></div>
+          </section>
+          <div class="rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-6 md:p-8">
+            <h2 class="text-2xl font-black text-white">Your next step starts here.</h2>
+            <p class="mt-2">Choose one task, write down the next action, and give yourself a clear place to begin. A little structure can make a busy day feel more manageable.</p>
+            <div class="flex flex-wrap gap-3 mt-5">
+              <button onclick="switchTab('assignments')" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">Open task tracker</button>
+              <button onclick="switchTab('notes')" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold">Open notepad</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: UNLOCKED ARCADE (HIDDEN UNTIL UNLOCKED) -->
+    <section id="tab-arcade" class="tab-content hidden space-y-8">
+      <div class="glass-panel p-6 md:p-8 rounded-3xl border border-pink-500/40 bg-gradient-to-br from-slate-900/90 via-purple-950/40 to-slate-900/90">
+        <div class="flex items-center justify-between border-b border-pink-500/20 pb-4 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-2xl flex items-center justify-center">
+              <i class="fa-solid fa-gamepad animate-bounce"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">
+                Secret Student Arcade
+              </h2>
+              <p class="text-xs md:text-sm text-pink-200/70">Unlocked Area • Enjoy fully playable built-in HTML5 arcade classics & Hub games!</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 text-xs font-bold tracking-wider">UNLOCKED</span>
+        </div>
+
+        <!-- NEW FEATURED GAME EMBED: HUB -->
+        <div class="space-y-4 mb-6">
+          <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-star text-amber-400"></i> Featured Portal: Hub
+          </h3>
+          <div onclick="launchExternalGame('https://bluewizard.com/', 'Hub')" class="glass-card p-6 rounded-2xl cursor-pointer hover:border-pink-400 group bg-gradient-to-r from-pink-900/30 to-indigo-900/30 border border-pink-500/40 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-pink-600/30 text-pink-300 text-3xl flex items-center justify-center group-hover:scale-110 transition border border-pink-500/50">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <div>
+                <h4 class="font-black text-white text-xl">Hub (Bluewizard Arcade)</h4>
+                <p class="text-xs md:text-sm text-pink-200/80 mt-1">Directly embedded immersive portal loaded with amazing puzzle & action titles.</p>
+              </div>
+            </div>
+            <button class="px-5 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold shadow-lg shadow-pink-600/40 transition">
+              Play Hub Now →
+            </button>
+          </div>
+        </div>
+
+        <!-- CATEGORY 1: RETRO CANVAS GAMES -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-ghost text-purple-400"></i> Retro Canvas Classics
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div onclick="launchArcadeGame('snake')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <i class="fa-solid fa-staff-snake"></i>
+              </div>
+              <h4 class="font-bold text-white text-base">Retro Snake</h4>
+              <p class="text-xs text-slate-400 mt-1">Eat glowing pixels and expand!</p>
+            </div>
+
+            <div onclick="launchArcadeGame('flappy')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 text-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <i class="fa-solid fa-jet-fighter"></i>
+              </div>
+              <h4 class="font-bold text-white text-base">Flappy Jetpack</h4>
+              <p class="text-xs text-slate-400 mt-1">Navigate obstacles and survive!</p>
+            </div>
+
+            <div onclick="launchArcadeGame('pong')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 text-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <i class="fa-solid fa-table-tennis-paddle-ball"></i>
+              </div>
+              <h4 class="font-bold text-white text-base">Cyber Pong AI</h4>
+              <p class="text-xs text-slate-400 mt-1">Defeat the smart paddle opponent.</p>
+            </div>
+
+            <div onclick="launchArcadeGame('tictactoe')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 text-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <i class="fa-solid fa-xmark"></i>
+              </div>
+              <h4 class="font-bold text-white text-base">Neon Tic-Tac-Toe</h4>
+              <p class="text-xs text-slate-400 mt-1">Strategic grid battle.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BUILT-IN UNBLOCKED BROWSER SECTION -->
+        <div class="space-y-4 pt-4 border-t border-slate-700/60">
+          <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-compass text-indigo-400"></i> Built-in Unblocked Browser
+          </h3>
+          <p class="text-xs text-slate-400">Load approved game portals & sites directly inside your secure arcade viewport without leaving AcademiaHub.</p>
+          
+          <div class="glass-card p-4 rounded-2xl space-y-3">
+            <div class="flex gap-2">
+              <input type="text" id="browserUrlInput" placeholder="https://basketbros.io or https://poki.com" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-pink-500 font-mono">
+              <button onclick="navigateInternalBrowser()" class="px-5 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-globe"></i> Go
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="quickBrowse('https://basketbros.io', 'Basketball Bros')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">BasketBros</button>
+              <button onclick="quickBrowse('https://footballbros.io', 'Football Bros')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">FootballBros</button>
+              <button onclick="quickBrowse('https://soccerbros.gg', 'Soccer Bros')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">SoccerBros</button>
+              <button onclick="quickBrowse('https://bluewizard.com', 'Blue Wizard')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">Blue Wizard Hub</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATEGORY 2: SPORT BROS SERIES & EMBEDS (PLAYABLE INSIDE MODAL) -->
+        <div class="space-y-4 pt-4 border-t border-slate-700/60">
+          <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-trophy text-amber-400"></i> Sport Bros Series & Portals
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="launchExternalGame('https://basketbros.io/', 'Basketball Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-basketball"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Basketball Bros</h4>
+                  <p class="text-xs text-slate-400">Slam dunks & fast court action</p>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="launchExternalGame('https://footballbros.io/', 'Football Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-amber-700/20 text-amber-500 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-football"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Football Bros</h4>
+                  <p class="text-xs text-slate-400">Touchdowns & gridiron glory</p>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="launchExternalGame('https://soccerbros.gg/', 'Soccer Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-futbol"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Soccer Bros</h4>
+                  <p class="text-xs text-slate-400">Penalty shots & championship games</p>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="launchExternalGame('https://baseballbros.io/', 'Baseball Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-baseball-bat-ball"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Baseball Bros</h4>
+                  <p class="text-xs text-slate-400">Home runs & pitch battles</p>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="launchExternalGame('https://wrestlebros.io/', 'Wrestle Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-red-500/20 text-red-400 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-hand-fist"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Wrestle Bros</h4>
+                  <p class="text-xs text-slate-400">Ring slams & belt matches</p>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="launchExternalGame('https://karatebros.io/', 'Karate Bros')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-pink-400 group">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 text-2xl flex items-center justify-center group-hover:scale-110 transition">
+                  <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white text-base">Karate Bros</h4>
+                  <p class="text-xs text-slate-400">Martial arts sparring</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: TASK CREATION & EDIT -->
+  <div id="taskModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md p-6 rounded-3xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+        <h3 id="taskModalTitle" class="text-lg font-bold text-white">Create New Task</h3>
+        <button onclick="closeTaskModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Subject</label>
+          <input type="text" id="taskSubject" placeholder="e.g. Mathematics, History" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Task Title</label>
+          <input type="text" id="taskTitle" placeholder="e.g. Chapter 4 Practice Problems" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Due Date</label>
+            <input type="date" id="taskDueDate" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Status</label>
+            <select id="taskStatus" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
+          <textarea id="taskDesc" rows="3" placeholder="Additional instructions..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeTaskModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-sm font-semibold hover:bg-slate-700">Cancel</button>
+        <button onclick="saveTask()" class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-500">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CUSTOM STUDENT PROFILE -->
+  <div id="profileModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md p-6 rounded-3xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+        <h3 class="text-lg font-bold text-white">Edit Profile</h3>
+        <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div class="flex items-center gap-4">
+          <img id="profilePreviewAvatar" src="" alt="Avatar" class="w-16 h-16 rounded-full bg-indigo-950 border-2 border-indigo-500 object-cover">
+          <div class="flex-1 space-y-2">
+            <label class="block text-xs font-semibold text-slate-400">Preset Avatars</label>
+            <div class="flex gap-2">
+              <button onclick="setAvatarPreset('Scholar')" class="p-1 rounded bg-slate-800 hover:bg-indigo-600 text-xs">Bot 1</button>
+              <button onclick="setAvatarPreset('Alpha')" class="p-1 rounded bg-slate-800 hover:bg-indigo-600 text-xs">Bot 2</button>
+              <button onclick="setAvatarPreset('Phoenix')" class="p-1 rounded bg-slate-800 hover:bg-indigo-600 text-xs">Bot 3</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Upload Profile Picture from File</label>
+          <input type="file" id="profileAvatarFile" accept="image/*" onchange="handleAvatarFileUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Student Name</label>
+          <input type="text" id="profileName" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Grade / Level</label>
+          <input type="text" id="profileGrade" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Personal Motto / Bio</label>
+          <textarea id="profileBio" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeProfileModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-sm font-semibold hover:bg-slate-700">Cancel</button>
+        <button onclick="saveProfile()" class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-500">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: THEME SELECTOR -->
+  <div id="themeModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm p-6 rounded-3xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+        <h3 class="text-lg font-bold text-white">Select Visual Theme</h3>
+        <button onclick="closeThemeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="applyTheme('ambient')" class="w-full p-3 rounded-xl bg-indigo-950/80 border border-indigo-500/40 text-left font-semibold text-indigo-200 hover:border-indigo-400 flex items-center justify-between">
+          <span>Deep Ambient Blue</span>
+          <span class="w-4 h-4 rounded-full bg-indigo-500"></span>
+        </button>
+        <button onclick="applyTheme('cyber')" class="w-full p-3 rounded-xl bg-zinc-900 border border-pink-500/40 text-left font-semibold text-pink-300 hover:border-pink-400 flex items-center justify-between">
+          <span>Cyberpunk Neon</span>
+          <span class="w-4 h-4 rounded-full bg-pink-500"></span>
+        </button>
+        <button onclick="applyTheme('matrix')" class="w-full p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-left font-semibold text-emerald-300 hover:border-emerald-400 flex items-center justify-between">
+          <span>Emerald Matrix</span>
+          <span class="w-4 h-4 rounded-full bg-emerald-500"></span>
+        </button>
+        <button onclick="applyTheme('purple')" class="w-full p-3 rounded-xl bg-purple-950/80 border border-purple-500/40 text-left font-semibold text-purple-300 hover:border-purple-400 flex items-center justify-between">
+          <span>Purple Haze Glow</span>
+          <span class="w-4 h-4 rounded-full bg-purple-500"></span>
+        </button>
+        <button onclick="applyTheme('pitchblack')" class="w-full p-3 rounded-xl bg-black border border-slate-700 text-left font-semibold text-slate-200 hover:border-slate-400 flex items-center justify-between">
+          <span>Pitch Black OLED</span>
+          <span class="w-4 h-4 rounded-full bg-white"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: GAME PLAYER MODAL (PLAYABLE HTML5 CANVAS GAMES) -->
+  <div id="gameModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col p-2 sm:p-4">
+    <div class="flex items-center justify-between glass-panel px-4 py-2.5 rounded-2xl mb-2">
+      <div class="flex items-center gap-3">
+        <i id="gameModalIcon" class="fa-solid fa-gamepad text-pink-400 text-xl"></i>
+        <h3 id="gameModalTitle" class="font-bold text-white text-base md:text-lg">Arcade Game</h3>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="closeGameModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+    </div>
+
+    <div class="flex-1 w-full glass-panel rounded-2xl overflow-hidden relative flex items-center justify-center p-2">
+      <!-- Iframe Container for External Game Embeds / Unblocked Browser -->
+      <iframe id="gameIframe" class="w-full h-full rounded-xl border border-slate-800 hidden bg-slate-950" allow="autoplay; gamepad; fullscreen; accelerometer; gyroscope" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" src=""></iframe>
+
+      <!-- Canvas Container for Local Games -->
+      <div id="canvasContainer" class="w-full h-full flex flex-col items-center justify-center relative">
+        <canvas id="gameCanvas" width="600" height="400" class="max-w-full max-h-full rounded-xl bg-slate-950 border border-slate-800 shadow-2xl"></canvas>
+        <div id="canvasOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/85 p-4 text-center">
+          <h4 id="canvasOverlayTitle" class="text-2xl font-black text-white mb-2">Game Ready</h4>
+          <p id="canvasOverlaySub" class="text-slate-400 text-sm mb-4">Click below or press Space to Start!</p>
+          <button onclick="startCurrentCanvasGame()" class="px-6 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold shadow-lg shadow-pink-600/40 transition">
+            Start Game
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC & STATE ENGINE -->
+  <script>
+    /* ================= LOCAL STORAGE STATE ================= */
+    let appState = {
+      profile: {
+        name: 'Alex Rivers',
+        grade: '11th Grade Scholar',
+        bio: 'Focus on progress, not perfection. Keep pushing your limits every single day!',
+        avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Scholar'
+      },
+      tasks: [
+        { id: 1, subject: 'Mathematics', title: 'Chapter 4 Calculus Exercises', dueDate: '2026-10-25', status: 'Pending', desc: 'Complete problems 1 to 20 on page 142.' },
+        { id: 2, subject: 'History', title: 'World War II Essay Outline', dueDate: '2026-10-28', status: 'In Progress', desc: 'Prepare thesis statement and main bullet points.' }
+      ],
+      gpaCourses: [
+        { id: 1, title: 'AP Physics', grade: 4.0, credits: 3 },
+        { id: 2, title: 'English Honors', grade: 3.7, credits: 3 }
+      ],
+      notes: '',
+      arcadeUnlocked: false,
+      classrooms: [],
+      joinedClassIds: [],
+      classroomMode: 'student',
+      theme: 'ambient'
+    };
+
+    let editingTaskId = null;
+    let currentGameKey = null;
+    let canvasAnimLoop = null;
+
+    /* ================= INITIALIZATION ================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      applyTheme(appState.theme);
+      renderAll();
+      renderClassrooms();
+      setupKeyListeners();
+      const classCodeField = document.getElementById('classCodeInput');
+      if (classCodeField) classCodeField.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') submitClassCode();
+      });
+    });
+
+    function loadStateFromStorage() {
+      const saved = localStorage.getItem('academia_hub_data');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          appState = { ...appState, ...parsed };
+        } catch (e) {
+          console.error("Failed loading state", e);
+        }
+      }
+      const noteEl = document.getElementById('smartNotePad');
+      if (!Array.isArray(appState.classrooms)) appState.classrooms = [];
+      if (!Array.isArray(appState.joinedClassIds)) appState.joinedClassIds = [];
+      if (noteEl) noteEl.value = appState.notes || '';
+      const mode = document.getElementById('classroomMode');
+      if (mode) mode.value = appState.classroomMode || 'student';
+    }
+
+    function saveStateToStorage() {
+      const noteEl = document.getElementById('smartNotePad');
+      if (noteEl) appState.notes = noteEl.value;
+      localStorage.setItem('academia_hub_data', JSON.stringify(appState));
+    }
+
+    /* ================= RENDER LOGIC ================= */
+    function renderAll() {
+      document.getElementById('navName').innerText = appState.profile.name;
+      document.getElementById('dashStudentName').innerText = appState.profile.name;
+      document.getElementById('dashGradeLevel').innerText = appState.profile.grade;
+      document.getElementById('dashBio').innerText = `"${appState.profile.bio}"`;
+      document.getElementById('navAvatar').src = appState.profile.avatar;
+
+      if (appState.arcadeUnlocked) {
+        document.getElementById('drawerSecretTab').classList.remove('hidden');
+      } else {
+        document.getElementById('drawerSecretTab').classList.add('hidden');
+      }
+
+      const pendingCount = appState.tasks.filter(t => t.status !== 'Completed').length;
+      const completedCount = appState.tasks.filter(t => t.status === 'Completed').length;
+      document.getElementById('statPending').innerText = pendingCount;
+      document.getElementById('statCompleted').innerText = completedCount;
+
+      renderTasks();
+      renderGPA();
+    }
+
+    /* ================= NAVIGATION & DRAWER ================= */
+    function toggleDrawer() {
+      const drawer = document.getElementById('drawer');
+      const backdrop = document.getElementById('drawerBackdrop');
+      const isHidden = drawer.classList.contains('-translate-x-full');
+      if (isHidden) {
+        drawer.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        drawer.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    function switchTab(tabId) {
+      if (tabId === 'arcade' && !appState.arcadeUnlocked) {
+        showToast('Enter your access code in Join Classroom first.', true);
+        tabId = 'join-class';
+      }
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+      
+      const drawer = document.getElementById('drawer');
+      if (!drawer.classList.contains('-translate-x-full')) {
+        toggleDrawer();
+      }
+    }
+
+    function showToast(text, isError = false) {
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastText.innerText = text;
+      if (isError) {
+        toastIcon.className = "fa-solid fa-circle-xmark text-red-400 text-xl";
+      } else {
+        toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-xl";
+      }
+
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    /* ================= HOMEWORK & TASK CRUD ================= */
+    function renderTasks() {
+      const container = document.getElementById('taskList');
+      const previewContainer = document.getElementById('dashTasksPreview');
+      container.innerHTML = '';
+      previewContainer.innerHTML = '';
+
+      if (appState.tasks.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center text-slate-500 py-8">No tasks logged yet. Click 'Create New Task' to begin!</div>`;
+        previewContainer.innerHTML = `<div class="text-center text-slate-500 text-sm py-2">No pending homework. Enjoy your free time!</div>`;
+        return;
+      }
+
+      appState.tasks.forEach(task => {
+        const isDone = task.status === 'Completed';
+        const card = document.createElement('div');
+        card.className = `glass-card p-5 rounded-2xl flex flex-col justify-between space-y-3 border-l-4 ${isDone ? 'border-emerald-500 opacity-75' : 'border-indigo-500'}`;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold">${escapeHtml(task.subject)}</span>
+              <span class="text-xs text-slate-400">${task.dueDate || 'No Date'}</span>
+            </div>
+            <h3 class="font-bold text-lg text-slate-100 mt-2 ${isDone ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</h3>
+            <p class="text-xs text-slate-300 mt-1">${escapeHtml(task.desc || '')}</p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-slate-700/50">
+            <select onchange="updateTaskStatus(${task.id}, this.value)" class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200">
+              <option value="Pending" ${task.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="In Progress" ${task.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+              <option value="Completed" ${task.status === 'Completed' ? 'selected' : ''}>Completed</option>
+            </select>
+            <div class="flex gap-2">
+              <button onclick="editTask(${task.id})" class="text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteTask(${task.id})" class="text-xs text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+
+        if (!isDone && previewContainer.children.length < 3) {
+          const prev = document.createElement('div');
+          prev.className = "flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-sm";
+          prev.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+              <span class="font-semibold text-slate-200">${escapeHtml(task.title)}</span>
+            </div>
+            <span class="text-xs text-indigo-400 font-mono">${task.dueDate || 'Pending'}</span>
+          `;
+          previewContainer.appendChild(prev);
+        }
+      });
+    }
+
+    function openTaskModal(taskId = null) {
+      editingTaskId = taskId;
+      const modal = document.getElementById('taskModal');
+      const title = document.getElementById('taskModalTitle');
+
+      if (taskId) {
+        title.innerText = "Edit Task";
+        const t = appState.tasks.find(x => x.id === taskId);
+        if (t) {
+          document.getElementById('taskSubject').value = t.subject;
+          document.getElementById('taskTitle').value = t.title;
+          document.getElementById('taskDueDate').value = t.dueDate;
+          document.getElementById('taskStatus').value = t.status;
+          document.getElementById('taskDesc').value = t.desc;
+        }
+      } else {
+        title.innerText = "Create New Task";
+        document.getElementById('taskSubject').value = '';
+        document.getElementById('taskTitle').value = '';
+        document.getElementById('taskDueDate').value = '';
+        document.getElementById('taskStatus').value = 'Pending';
+        document.getElementById('taskDesc').value = '';
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeTaskModal() {
+      document.getElementById('taskModal').classList.add('hidden');
+    }
+
+    function saveTask() {
+      const subject = document.getElementById('taskSubject').value.trim();
+      const title = document.getElementById('taskTitle').value.trim();
+      const dueDate = document.getElementById('taskDueDate').value;
+      const status = document.getElementById('taskStatus').value;
+      const desc = document.getElementById('taskDesc').value.trim();
+
+      if (!subject || !title) {
+        showToast("Please enter both Subject and Title.", true);
+        return;
+      }
+
+      if (editingTaskId) {
+        const idx = appState.tasks.findIndex(x => x.id === editingTaskId);
+        if (idx !== -1) {
+          appState.tasks[idx] = { id: editingTaskId, subject, title, dueDate, status, desc };
+        }
+      } else {
+        appState.tasks.push({ id: Date.now(), subject, title, dueDate, status, desc });
+      }
+
+      saveStateToStorage();
+      renderAll();
+      closeTaskModal();
+      showToast("Task saved successfully!");
+    }
+
+    function updateTaskStatus(id, newStatus) {
+      const t = appState.tasks.find(x => x.id === id);
+      if (t) {
+        t.status = newStatus;
+        saveStateToStorage();
+        renderAll();
+      }
+    }
+
+    function editTask(id) { openTaskModal(id); }
+    function deleteTask(id) {
+      appState.tasks = appState.tasks.filter(x => x.id !== id);
+      saveStateToStorage();
+      renderAll();
+      showToast("Task deleted.");
+    }
+
+    /* ================= CLASSROOM WORKSPACE ================= */
+    function classroomFeedback(message, kind = 'error') {
+      const feedback = document.getElementById('classCodeFeedback');
+      feedback.className = 'p-4 rounded-2xl text-sm font-semibold border ' + (kind === 'success' ? 'bg-emerald-500/15 text-emerald-200 border-emerald-500/30' : 'bg-red-500/15 text-red-200 border-red-500/30');
+      feedback.textContent = message;
+      feedback.classList.remove('hidden');
+    }
+
+    function submitClassCode() {
+      const input = document.getElementById('classCodeInput');
+      const val = (input.value || '').trim().toUpperCase();
+      if (!val) return classroomFeedback('Please enter a class code.');
+
+      // Keep the existing arcade easter egg, but do not treat arbitrary text as a class.
+      if (val === 'GAMES') {
+        appState.arcadeUnlocked = true;
+        saveStateToStorage();
+        renderAll();
+        classroomFeedback('Secret code accepted! Arcade unlocked in the table of contents.', 'success');
+        showToast('Secret Arcade Unlocked!');
+        setTimeout(() => switchTab('arcade'), 900);
+        return;
+      }
+
+      const found = appState.classrooms.find(c => String(c.code).toUpperCase() === val);
+      if (!found) return classroomFeedback('Sorry, we could not find your class.');
+      if (!appState.joinedClassIds.includes(found.id)) appState.joinedClassIds.push(found.id);
+      saveStateToStorage();
+      renderClassrooms();
+      classroomFeedback('You joined ' + found.name + ' successfully.', 'success');
+      showToast('Joined class: ' + found.name);
+      input.value = '';
+    }
+
+    function createClassroom() {
+      const nameEl = document.getElementById('newClassName');
+      const codeEl = document.getElementById('newClassCode');
+      const name = (nameEl.value || '').trim();
+      let code = (codeEl.value || '').trim().toUpperCase().replace(/\s+/g, '');
+      if (!name) return classroomFeedback('Enter a class name before creating the class.');
+      if (!code) code = Math.random().toString(36).slice(2, 8).toUpperCase();
+      if (!/^[A-Z0-9_-]{3,24}$/.test(code)) return classroomFeedback('Use 3–24 letters, numbers, hyphens, or underscores for the join code.');
+      if (appState.classrooms.some(c => String(c.code).toUpperCase() === code)) return classroomFeedback('That class code is already in use. Choose a different code.');
+      const classroom = { id: 'class_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, code, createdAt: new Date().toISOString(), assignments: [] };
+      appState.classrooms.push(classroom);
+      if (!appState.joinedClassIds.includes(classroom.id)) appState.joinedClassIds.push(classroom.id);
+      saveStateToStorage();
+      nameEl.value = ''; codeEl.value = '';
+      renderClassrooms();
+      classroomFeedback('Class created. Share join code ' + code + ' with your students.', 'success');
+    }
+
+    function renderClassrooms() {
+      const modeEl = document.getElementById('classroomMode');
+      const toolsEl = document.getElementById('teacherClassTools');
+      const listEl = document.getElementById('classroomList');
+      if (!listEl) return;
+      const mode = modeEl ? modeEl.value : (appState.classroomMode || 'student');
+      appState.classroomMode = mode;
+      if (toolsEl) toolsEl.classList.toggle('hidden', mode !== 'teacher');
+      const visible = mode === 'teacher' ? appState.classrooms : appState.classrooms.filter(c => appState.joinedClassIds.includes(c.id));
+      if (!visible.length) {
+        listEl.innerHTML = `<div class="glass-panel p-6 rounded-2xl text-center"><h4 class="text-white font-bold">${mode === 'teacher' ? 'No classes created yet' : 'No classes joined yet'}</h4><p class="text-sm text-slate-400 mt-1">${mode === 'teacher' ? 'Use Create a class above to get started.' : 'Enter a class code above to join a class.'}</p></div>`;
+        saveStateToStorage();
+        return;
+      }
+      listEl.innerHTML = visible.map(c => {
+        const assignments = Array.isArray(c.assignments) ? c.assignments : [];
+        const assignmentMarkup = assignments.length ? assignments.map(a => {
+          const submissions = Array.isArray(a.submissions) ? a.submissions : [];
+          const mine = submissions.find(sub => sub.student === (appState.profile.name || 'Student'));
+          const due = a.dueDate ? `Due ${escapeClassText(a.dueDate)}` : 'No due date';
+          return `<div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 space-y-3"><div class="flex flex-col sm:flex-row sm:justify-between gap-2"><div><h6 class="text-white font-bold">${escapeClassText(a.title)}</h6><p class="text-sm text-slate-400 mt-1">${escapeClassText(a.description || '')}</p><p class="text-xs text-slate-500 mt-2">${due}</p></div>${a.grade !== undefined ? '' : ''}</div>${mode === 'teacher' ? `<div class="text-sm text-slate-300">${submissions.length} submission(s)</div>${submissions.map((sub, idx) => `<div class="border-t border-slate-700 pt-3"><p class="text-sm text-slate-200"><strong>${escapeClassText(sub.student)}</strong>: ${escapeClassText(sub.text)}</p><p class="text-xs text-slate-400 mt-1">Grade: ${sub.grade === null || sub.grade === undefined ? 'Not graded' : escapeClassText(String(sub.grade))}${sub.feedback ? ' · ' + escapeClassText(sub.feedback) : ''}</p><button onclick="gradeSubmission('${c.id}','${a.id}',${idx})" class="mt-2 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">Grade / feedback</button></div>`).join('')}` : `<div class="text-sm ${mine ? 'text-emerald-300' : 'text-slate-400'}">${mine ? 'Submitted' + (mine.grade !== null && mine.grade !== undefined ? ' · Grade: ' + escapeClassText(String(mine.grade)) : ' · Awaiting grade') : 'Not submitted'}</div><button onclick="submitAssignment('${c.id}','${a.id}')" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold">${mine ? 'Update submission' : 'Submit work'}</button>${mine && mine.feedback ? `<p class="text-sm text-slate-300">Teacher feedback: ${escapeClassText(mine.feedback)}</p>` : ''}`}</div>`;
+        }).join('') : '<p class="text-sm text-slate-500">No assignments posted yet.</p>';
+        return `<article class="glass-panel p-5 md:p-6 rounded-2xl space-y-4"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><h4 class="text-xl font-black text-white">${escapeClassText(c.name)}</h4><p class="text-xs text-slate-400 mt-1">Join code: <span class="font-mono tracking-widest text-indigo-300">${escapeClassText(c.code)}</span></p></div>${mode === 'teacher' ? `<button onclick="postAssignment('${c.id}')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold">+ Post assignment</button>` : ''}</div><div class="space-y-3">${assignmentMarkup}</div></article>`;
+      }).join('');
+      saveStateToStorage();
+    }
+
+    function escapeClassText(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+
+    function postAssignment(classId) {
+      const classroom = appState.classrooms.find(c => c.id === classId);
+      if (!classroom) return;
+      const title = prompt('Assignment title:');
+      if (!title || !title.trim()) return;
+      const description = prompt('Instructions (optional):') || '';
+      const dueDate = prompt('Due date (YYYY-MM-DD, optional):') || '';
+      classroom.assignments = Array.isArray(classroom.assignments) ? classroom.assignments : [];
+      classroom.assignments.push({ id: 'as_' + Date.now().toString(36), title: title.trim().slice(0, 120), description: description.trim().slice(0, 2000), dueDate: /^\d{4}-\d{2}-\d{2}$/.test(dueDate) ? dueDate : '', submissions: [] });
+      saveStateToStorage(); renderClassrooms(); showToast('Assignment posted.');
+    }
+
+    function submitAssignment(classId, assignmentId) {
+      const classroom = appState.classrooms.find(c => c.id === classId);
+      const assignment = classroom && classroom.assignments.find(a => a.id === assignmentId);
+      if (!assignment) return;
+      const text = prompt('Enter your work or paste a link to your document:');
+      if (!text || !text.trim()) return;
+      assignment.submissions = Array.isArray(assignment.submissions) ? assignment.submissions : [];
+      const student = (appState.profile.name || 'Student').trim().slice(0, 80);
+      const existing = assignment.submissions.find(sub => sub.student === student);
+      if (existing) { existing.text = text.trim().slice(0, 10000); existing.submittedAt = new Date().toISOString(); existing.grade = null; existing.feedback = ''; }
+      else assignment.submissions.push({ student, text: text.trim().slice(0, 10000), submittedAt: new Date().toISOString(), grade: null, feedback: '' });
+      saveStateToStorage(); renderClassrooms(); showToast('Work submitted.');
+    }
+
+    function gradeSubmission(classId, assignmentId, submissionIndex) {
+      const classroom = appState.classrooms.find(c => c.id === classId);
+      const assignment = classroom && classroom.assignments.find(a => a.id === assignmentId);
+      const submission = assignment && assignment.submissions && assignment.submissions[submissionIndex];
+      if (!submission) return;
+      const raw = prompt('Grade for ' + submission.student + ' (0–100):', submission.grade ?? '');
+      if (raw === null) return;
+      const grade = Number(raw);
+      if (raw.trim() === '' || !Number.isFinite(grade) || grade < 0 || grade > 100) return classroomFeedback('Enter a grade from 0 to 100.');
+      const feedback = prompt('Feedback (optional):', submission.feedback || '') || '';
+      submission.grade = Math.round(grade * 100) / 100;
+      submission.feedback = feedback.trim().slice(0, 2000);
+      submission.gradedAt = new Date().toISOString();
+      saveStateToStorage(); renderClassrooms(); showToast('Grade saved.');
+    }
+
+    /* ================= GPA CALCULATOR ================= */
+    function addGpaCourse() {
+      const title = document.getElementById('gpaCourseName').value.trim();
+      const grade = parseFloat(document.getElementById('gpaGrade').value);
+      const credits = parseInt(document.getElementById('gpaCredits').value) || 3;
+
+      if (!title) {
+        showToast("Please enter a course title.", true);
+        return;
+      }
+
+      appState.gpaCourses.push({ id: Date.now(), title, grade, credits });
+      document.getElementById('gpaCourseName').value = '';
+      saveStateToStorage();
+      renderGPA();
+      showToast("Course added!");
+    }
+
+    function deleteGpaCourse(id) {
+      appState.gpaCourses = appState.gpaCourses.filter(x => x.id !== id);
+      saveStateToStorage();
+      renderGPA();
+    }
+
+    function renderGPA() {
+      const container = document.getElementById('gpaCoursesList');
+      container.innerHTML = '';
+
+      if (appState.gpaCourses.length === 0) {
+        container.innerHTML = `<div class="text-sm text-slate-500 italic">No courses added yet.</div>`;
+        document.getElementById('calculatedGpaScore').innerText = '0.00';
+        document.getElementById('gpaTotalCredits').innerText = '0 Total Credits';
+        return;
+      }
+
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      appState.gpaCourses.forEach(c => {
+        totalPoints += c.grade * c.credits;
+        totalCredits += c.credits;
+
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-sm";
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-white">${escapeHtml(c.title)}</span>
+            <span class="text-xs text-slate-400 ml-2">(${c.credits} Credits)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-mono text-amber-400 font-bold">${c.grade.toFixed(1)}</span>
+            <button onclick="deleteGpaCourse(${c.id})" class="text-red-400 hover:text-red-300 text-xs"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+      document.getElementById('calculatedGpaScore').innerText = gpa;
+      document.getElementById('gpaTotalCredits').innerText = `${totalCredits} Total Credits`;
+      document.getElementById('statGPA').innerText = gpa;
+    }
+
+    /* ================= SMART NOTEPAD ================= */
+    function saveNote() {
+      saveStateToStorage();
+      showToast("Notes saved to local storage!");
+    }
+    function clearNote() {
+      document.getElementById('smartNotePad').value = '';
+      saveStateToStorage();
+      showToast("Notes cleared.");
+    }
+    function exportNote() {
+      const text = document.getElementById('smartNotePad').value;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'AcademiaHub_Notes.txt';
+      a.click();
+    }
+
+    /* ================= PROFILE EDITING ================= */
+    let tempUploadedAvatar = null;
+
+    function openProfileModal() {
+      document.getElementById('profileName').value = appState.profile.name;
+      document.getElementById('profileGrade').value = appState.profile.grade;
+      document.getElementById('profileBio').value = appState.profile.bio;
+      document.getElementById('profilePreviewAvatar').src = appState.profile.avatar;
+      document.getElementById('profileAvatarFile').value = '';
+      tempUploadedAvatar = null;
+      document.getElementById('profileModal').classList.remove('hidden');
+    }
+    function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+    
+    function handleAvatarFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          tempUploadedAvatar = e.target.result;
+          document.getElementById('profilePreviewAvatar').src = tempUploadedAvatar;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function setAvatarPreset(seed) {
+      const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+      tempUploadedAvatar = url;
+      document.getElementById('profilePreviewAvatar').src = url;
+    }
+    
+    function saveProfile() {
+      appState.profile.name = document.getElementById('profileName').value.trim() || 'Alex Rivers';
+      appState.profile.grade = document.getElementById('profileGrade').value.trim() || 'Student';
+      appState.profile.bio = document.getElementById('profileBio').value.trim() || 'Keep learning!';
+      if (tempUploadedAvatar) {
+        appState.profile.avatar = tempUploadedAvatar;
+      }
+
+      saveStateToStorage();
+      renderAll();
+      closeProfileModal();
+      showToast("Profile updated!");
+    }
+
+    /* ================= THEME SYSTEM ================= */
+    function openThemeModal() {
+      document.getElementById('themeModal').classList.remove('hidden');
+    }
+
+    function closeThemeModal() {
+      document.getElementById('themeModal').classList.add('hidden');
+    }
+
+    function applyTheme(themeName) {
+      appState.theme = themeName;
+      document.body.className = "relative min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white";
+      if (themeName !== 'ambient') {
+        document.body.classList.add(`theme-${themeName}`);
+      }
+      saveStateToStorage();
+      closeThemeModal();
+      showToast(`Applied ${themeName} theme!`);
+    }
+
+    /* ================= GAME / ARCADE & BROWSER MODAL ================= */
+    function closeGameModal() {
+      const modal = document.getElementById('gameModal');
+      modal.classList.add('hidden');
+      const iframe = document.getElementById('gameIframe');
+      iframe.src = '';
+      iframe.classList.add('hidden');
+      document.getElementById('canvasContainer').classList.remove('hidden');
+
+      if (canvasAnimLoop) {
+        cancelAnimationFrame(canvasAnimLoop);
+        clearTimeout(canvasAnimLoop);
+        canvasAnimLoop = null;
+      }
+      currentGameKey = null;
+    }
+
+    function quickBrowse(url, title) {
+      document.getElementById('browserUrlInput').value = url;
+      launchExternalGame(url, title);
+    }
+
+    function navigateInternalBrowser() {
+      let url = document.getElementById('browserUrlInput').value.trim();
+      if (!url) return;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      launchExternalGame(url, 'Unblocked Browser Hub');
+    }
+
+    function launchExternalGame(url, title) {
+      currentGameKey = null;
+      const modal = document.getElementById('gameModal');
+      document.getElementById('gameModalTitle').innerText = title;
+
+      const iframe = document.getElementById('gameIframe');
+      iframe.src = url;
+      iframe.classList.remove('hidden');
+      document.getElementById('canvasContainer').classList.add('hidden');
+      modal.classList.remove('hidden');
+    }
+
+    function launchArcadeGame(gameKey) {
+      currentGameKey = gameKey;
+      const modal = document.getElementById('gameModal');
+
+      const titles = {
+        snake: 'Retro Snake',
+        flappy: 'Flappy Jetpack',
+        pong: 'Cyber Pong AI',
+        tictactoe: 'Neon Tic-Tac-Toe'
+      };
+
+      document.getElementById('gameModalTitle').innerText = titles[gameKey] || 'Arcade Game';
+
+      document.getElementById('gameIframe').classList.add('hidden');
+      document.getElementById('canvasContainer').classList.remove('hidden');
+      document.getElementById('canvasOverlay').classList.remove('hidden');
+      document.getElementById('canvasOverlayTitle').innerText = (titles[gameKey] || gameKey).toUpperCase();
+      document.getElementById('canvasOverlaySub').innerText = "Click Start Game below or press Space to play!";
+      modal.classList.remove('hidden');
+    }
+
+    let canvas, ctx;
+    let gameState = {};
+
+    function startCurrentCanvasGame() {
+      document.getElementById('canvasOverlay').classList.add('hidden');
+      canvas = document.getElementById('gameCanvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 400;
+
+      if (canvasAnimLoop) {
+        cancelAnimationFrame(canvasAnimLoop);
+        clearTimeout(canvasAnimLoop);
+        canvasAnimLoop = null;
+      }
+
+      if (currentGameKey === 'snake') setupSnake();
+      else if (currentGameKey === 'flappy') setupFlappy();
+      else if (currentGameKey === 'pong') setupPong();
+      else if (currentGameKey === 'tictactoe') setupTicTacToe();
+    }
+
+    /* ================= GAME IMPLEMENTATIONS ================= */
+    function setupSnake() {
+      let snake = [{x: 10, y: 10}];
+      let food = {x: 15, y: 10};
+      let dx = 1, dy = 0;
+      let score = 0;
+      let grid = 20;
+
+      window.snakeKeyHandler = (e) => {
+        if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
+        if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
+        if (e.key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
+        if (e.key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
+      };
+      window.addEventListener('keydown', window.snakeKeyHandler);
+
+      function loop() {
+        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+        if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20 || snake.some(s => s.x === head.x && s.y === head.y)) {
+          ctx.fillStyle = 'rgba(0,0,0,0.8)';
+          ctx.fillRect(0, 0, 600, 400);
+          ctx.fillStyle = '#fff';
+          ctx.font = '30px Inter';
+          ctx.textAlign = 'center';
+          ctx.fillText(`Game Over! Score: ${score}`, 300, 200);
+          window.removeEventListener('keydown', window.snakeKeyHandler);
+          return;
+        }
+
+        snake.unshift(head);
+        if (head.x === food.x && head.y === food.y) {
+          score += 10;
+          food = {x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20)};
+        } else {
+          snake.pop();
+        }
+
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 0, 600, 400);
+
+        ctx.fillStyle = '#ec4899';
+        ctx.fillRect(food.x * grid, food.y * grid, grid - 2, grid - 2);
+
+        ctx.fillStyle = '#10b981';
+        snake.forEach(s => ctx.fillRect(s.x * grid, s.y * grid, grid - 2, grid - 2));
+
+        canvasAnimLoop = setTimeout(() => requestAnimationFrame(loop), 100);
+      }
+      loop();
+    }
+
+    function setupFlappy() {
+      let birdY = 200, velocity = 0, gravity = 0.6, lift = -10;
+      let pipes = [];
+      let score = 0;
+      let frame = 0;
+
+      window.flappyKeyHandler = (e) => {
+        if (e.code === 'Space') { velocity = lift; e.preventDefault(); }
+      };
+      window.addEventListener('keydown', window.flappyKeyHandler);
+
+      function loop() {
+        frame++;
+        velocity += gravity;
+        birdY += velocity;
+
+        if (frame % 90 === 0) {
+          let h = Math.floor(Math.random() * 180) + 50;
+          pipes.push({x: 600, top: h, bottom: h + 120, passed: false});
+        }
+
+        pipes.forEach(p => p.x -= 3);
+        pipes = pipes.filter(p => p.x > -60);
+
+        pipes.forEach(p => {
+          if (p.x < 80 && p.x + 50 > 50 && (birdY < p.top || birdY > p.bottom)) {
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, 600, 400);
+            ctx.fillStyle = '#fff';
+            ctx.font = '30px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Crash! Score: ${score}`, 300, 200);
+            window.removeEventListener('keydown', window.flappyKeyHandler);
+            return;
+          }
+          if (!p.passed && p.x < 50) {
+            score++;
+            p.passed = true;
+          }
+        });
+
+        if (birdY > 400 || birdY < 0) {
+          window.removeEventListener('keydown', window.flappyKeyHandler);
+          return;
+        }
+
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 0, 600, 400);
+
+        ctx.fillStyle = '#f59e0b';
+        pipes.forEach(p => {
+          ctx.fillRect(p.x, 0, 50, p.top);
+          ctx.fillRect(p.x, p.bottom, 50, 400 - p.bottom);
+        });
+
+        ctx.fillStyle = '#6366f1';
+        ctx.beginPath();
+        ctx.arc(65, birdY, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '20px Inter';
+        ctx.fillText(`Score: ${score}`, 20, 30);
+
+        canvasAnimLoop = requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    function setupPong() {
+      let py = 150, ay = 150;
+      let bx = 300, by = 200, bdx = 4, bdy = 3;
+      let pScore = 0, aScore = 0;
+
+      window.pongMouseMove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        py = e.clientY - rect.top - 40;
+      };
+      canvas.addEventListener('mousemove', window.pongMouseMove);
+
+      function loop() {
+        bx += bdx;
+        by += bdy;
+
+        if (by <= 0 || by >= 400) bdy *= -1;
+
+        // AI Paddle AI
+        if (ay + 40 < by) ay += 3;
+        if (ay + 40 > by) ay -= 3;
+
+        // Player collision
+        if (bx <= 25 && by >= py && by <= py + 80) { bdx *= -1; pScore++; }
+        // AI collision
+        if (bx >= 575 && by >= ay && by <= ay + 80) { bdx *= -1; aScore++; }
+
+        if (bx < 0 || bx > 600) {
+          bx = 300; by = 200;
+          bdx *= -1;
+        }
+
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 0, 600, 400);
+
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillRect(15, py, 12, 80);
+
+        ctx.fillStyle = '#ec4899';
+        ctx.fillRect(573, ay, 12, 80);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(bx, by, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.font = '24px Inter';
+        ctx.fillText(`${pScore} - ${aScore}`, 270, 35);
+
+        canvasAnimLoop = requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    function setupTicTacToe() {
+      let board = ['', '', '', '', '', '', '', '', ''];
+      let turn = 'X';
+      let gameOver = false;
+
+      function draw() {
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 0, 600, 400);
+
+        ctx.strokeStyle = '#3f3f46';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(260, 50); ctx.moveTo(260, 350);
+        ctx.moveTo(340, 50); ctx.moveTo(340, 350);
+        // Grid lines
+        ctx.moveTo(200, 150); ctx.lineTo(400, 150);
+        ctx.moveTo(200, 250); ctx.lineTo(400, 250);
+        ctx.moveTo(200, 150); ctx.lineTo(200, 350);
+        ctx.moveTo(400, 150); ctx.lineTo(400, 350);
+        ctx.stroke();
+
+        board.forEach((val, i) => {
+          let x = 200 + (i % 3) * 66 + 33;
+          let y = 150 + Math.floor(i / 3) * 66 + 40;
+          if (val) {
+            ctx.fillStyle = val === 'X' ? '#6366f1' : '#ec4899';
+            ctx.font = 'bold 40px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(val, x, y);
+          }
+        });
+      }
+
+      window.ticClick = (e) => {
+        if (gameOver) return;
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        if (mx >= 200 && mx <= 400 && my >= 150 && my <= 350) {
+          let col = Math.floor((mx - 200) / 66);
+          let row = Math.floor((my - 150) / 66);
+          let idx = row * 3 + col;
+          if (!board[idx]) {
+            board[idx] = turn;
+            turn = turn === 'X' ? 'O' : 'X';
+            draw();
+          }
+        }
+      };
+      canvas.addEventListener('click', window.ticClick);
+      draw();
+    }
+
+    function setupKeyListeners() {
+      // Global hotkeys or helpers if needed
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
